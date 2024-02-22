@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd 
+import re
 
 #Header
 st.title('Fork It')
@@ -7,32 +8,26 @@ st.image('app_assets/logo.webp')
 
 # Load all the data 
 
-# Example list of user IDs
-# user_ids = [365441,     227130,     339672,     300249,    1284192,
-#              88910,     146783,     567343,     323144,     450518,
-#                  79617,      67010,      53586,     508275,     728020,
-#                 954556,      28729, 2002151809,     238538,     268464,
-#                1021716,    2179839,      30949,    1230396,    1222615,
-#                 608030,    1486890,     392230,    2210022,     135549,
-#                  93997,     851332,     607367,    1031671,      25356,
-#                 290786,      87109,    1602708,    1239646,     213139,
-#                 121807,     591021,     120448,      60199,     802269,
-#                 336698,     815244,     767152,    1410967,    1568090,
-#                 563121,     139270,     632534,    1292822,      78213,
-#                 732379,     403089,     503618,     289709,     237008,
-#                 295018,     943653,     797864,     763856, 2000390617,
-#                 817635,     329600,     756573,     305256,     234120,
-#                   7093,     792502,     165612,     328099,     241557,
-#                 552864,     785604,     296809,       4036,     747477,
-#                  86604,     803511,    1463003,      37502,     555701,
-#                 691937,     304705,     580134,     498431,     458575,
-#                 314327,       9333,     464253,    1723051, 1802579575,
-#                  56447,     368823,     979991,    1914273,      71288]
-
 user_names = ["American", "Gluten Free Fish", "Vegan Italian"]
 
-# Creating a dropdown menu with the list of user IDs
-selected_user_name = st.selectbox('Select a user ID:', user_names)
+# Example dictionary mapping user names to user IDs
+user_id_mapping = {
+    "American": 365441,
+    "Gluten Free Fish": 227130,
+    "Vegan Italian": 339672,
+    # Add more mappings as needed
+}
+
+# Creating a dropdown menu with the list of user names
+selected_user_name = st.selectbox('Select a user name:', user_names)
+
+# Retrieve the selected user ID from the dictionary
+selected_user_id = user_id_mapping.get(selected_user_name, None)
+
+# Displaying the selected user ID
+st.write(f"You're a {selected_user_name} with ID: {selected_user_id}")
+
+
 
 # Displaying the selected user ID
 st.write(f"You're a {selected_user_name}")
@@ -185,38 +180,39 @@ if submitted:
 # NMF General
 
 if model == "NMF (general)":
-    # Code to execute if "NMF (general)" is selected
-    st.write("You selected NMF (general).")
-    def load_rankings_data():
-        rankings_df = pd.read_pickle('app_data/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.pkl')
-        return rankings_df
+    pass
+    # # Code to execute if "NMF (general)" is selected
+    # st.write("You selected NMF (general).")
+    # def load_rankings_data():
+    #     rankings_df = pd.read_pickle('app_data/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.pkl')
+    #     return rankings_df
 
-    def top_n_values(column, n=1000000000):
-        top_n = column.nlargest(n)
-        top_values_list = [(idx, val) for idx, val in top_n.iteritems()]
-        return top_values_list
+    # def top_n_values(column, n=1000000000):
+    #     top_n = column.nlargest(n)
+    #     top_values_list = [(idx, val) for idx, val in top_n.iteritems()]
+    #     return top_values_list
     
-    # Additional condition to filter the DataFrame
-    if diet_requirements == "Lactose Free":
-        (rankings_df['lactosefree'] == 1)
-    elif diet_requirements == "Lactose Free":
-        (rankings_df['glutenfree'] == 1)
-    elif diet_requirements == "Lactose Free":
-        (rankings_df['vegan'] == 1)
-    elif diet_requirements == "Lactose Free":
-        (rankings_df['vegeterian'] == 1)
-    else diet_requirements == "None":
-        (rankings_df)
+    # # Additional condition to filter the DataFrame
+    # if diet_requirements == "Lactose Free":
+    #     (rankings_df['lactosefree'] == 1)
+    # elif diet_requirements == "Lactose Free":
+    #     (rankings_df['glutenfree'] == 1)
+    # elif diet_requirements == "Lactose Free":
+    #     (rankings_df['vegan'] == 1)
+    # elif diet_requirements == "Lactose Free":
+    #     (rankings_df['vegeterian'] == 1)
+    # else:
+    #     (rankings_df)
 
 # NMF Specific
 
 elif model == "NMF (specific)":
     # Lactose Free
     if diet_requirements == "Lactose Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -224,7 +220,6 @@ elif model == "NMF (specific)":
             return top_values_list
     # Gluten Free  
     elif diet_requirements == "Gluten Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Gluten Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
@@ -235,7 +230,6 @@ elif model == "NMF (specific)":
             return top_values_list
     # Vegan
     if diet_requirements == "Vegan":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/nmf_vegan_veganitalian.csv')
@@ -246,10 +240,10 @@ elif model == "NMF (specific)":
             return top_values_list
     # Vegeterian
     if diet_requirements == "Vegeterian":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle'app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -259,12 +253,12 @@ elif model == "NMF (specific)":
 # KNN General    
 
 elif model == "KNN (general)":
-# Lactose Free
+# Lactose Free'
     if diet_requirements == "Lactose Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO general model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -272,7 +266,6 @@ elif model == "KNN (general)":
             return top_values_list
     # Gluten Free  
     elif diet_requirements == "Gluten Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Gluten Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/knn_general_glutenfreefish.csv')
@@ -283,7 +276,6 @@ elif model == "KNN (general)":
             return top_values_list
     # Vegan
     if diet_requirements == "Vegan":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/knn_general_veganitalian.csv')
@@ -294,10 +286,10 @@ elif model == "KNN (general)":
             return top_values_list
     # Vegeterian
     if diet_requirements == "Vegeterian":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO general model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle'app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -309,10 +301,10 @@ elif model == "KNN (general)":
 elif model == "KNN (specific)":
 # Lactose Free
     if diet_requirements == "Lactose Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -320,7 +312,6 @@ elif model == "KNN (specific)":
             return top_values_list
     # Gluten Free  
     elif diet_requirements == "Gluten Free":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Gluten Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
@@ -331,7 +322,6 @@ elif model == "KNN (specific)":
             return top_values_list
     # Vegan
     if diet_requirements == "Vegan":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free")
         def load_rankings_data():
             rankings_df = pd.read_csv('app_data/knn_vegan_veganitalian.csv')
@@ -342,10 +332,10 @@ elif model == "KNN (specific)":
             return top_values_list
     # Vegeterian
     if diet_requirements == "Vegeterian":
-        (rankings_df['lactosefree'] == 1)
         st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
         def load_rankings_data():
-            rankings_df = pd.read_pickle'app_data/sample_df.pkl')
+            #rankings_df = pd.read_pickle('app_data/sample_df.pkl')
+            rankings_df = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
             return rankings_df
         def top_n_values(column, n=1000000000):
             top_n = column.nlargest(n)
@@ -354,10 +344,37 @@ elif model == "KNN (specific)":
 
 # Outputting Results
 
+# Function to load rankings data
+def load_rankings_data(model, diet_requirements):
+    if model == "NMF (general)":
+        pass  # Add your NMF (general) logic here
+    elif model == "NMF (specific)" and diet_requirements == "Lactose Free":
+        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
+    elif model == "NMF (specific)" and diet_requirements == "Gluten Free":
+        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
+    elif model == "NMF (specific)" and diet_requirements == "Vegan":
+        return pd.read_csv('app_data/nmf_vegan_veganitalian.csv')
+    elif model == "NMF (specific)" and diet_requirements == "Vegetarian":
+        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
+    elif model == "KNN (general)":
+        pass  # Add your KNN (general) logic here
+    elif model == "KNN (specific)" and diet_requirements == "Lactose Free":
+        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
+    elif model == "KNN (specific)" and diet_requirements == "Gluten Free":
+        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
+    elif model == "KNN (specific)" and diet_requirements == "Vegan":
+        return pd.read_csv('app_data/knn_vegan_veganitalian.csv')
+    elif model == "KNN (specific)" and diet_requirements == "Vegetarian":
+        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
+    else:
+        return pd.DataFrame()  # or return None or handle the default case as needed
+
+
 st.header('Rankings')
 
 # Load ranking data
-rankings_df = load_rankings_data()
+rankings_df = load_rankings_data(model, diet_requirements)
+
 # Get data for selected user
 row_of_interest = rankings_df.loc[selected_user_id]
 # Get the top 10 values in the row
@@ -370,7 +387,6 @@ st.write(top_recipes[:10])
 def load_recipe_data():
     recipes_df = pd.read_pickle('data/recipes2.pkl')
     return recipes_df
-
 
 
 # Taking the outputted result and passing them into this to apply the filters
@@ -393,27 +409,35 @@ filtered_df = top_10_df[
 
 # Dietary Requirements
 
-if lf:
-    filtered_df = filtered_df[filtered_df['lactosefree'] == 1]
-if gf:
-    filtered_df = filtered_df[filtered_df['glutenfree'] == 1]
-if v:
-    filtered_df = filtered_df[filtered_df['vegetarian'] == 1]
-if vg:
-    filtered_df = filtered_df[filtered_df['vegan'] == 1]
+#if lf:
+#    filtered_df = filtered_df[filtered_df['lactosefree'] == 1]
+#if gf:
+#    filtered_df = filtered_df[filtered_df['glutenfree'] == 1]
+#if v:
+#    filtered_df = filtered_df[filtered_df['vegetarian'] == 1]
+#if vg:
+#    filtered_df = filtered_df[filtered_df['vegan'] == 1]
 
 # Search Term
+
+if search_term:
+    # Do something with the search term, for example, print it
+    df.query('ingredients == @search_term')
+else:
+    # if no search term, does nothing
+    pass
+
 
 # Check if the search term is not empty
 if search_term:
     # Use the search_dataframe function to filter the DataFrame
-    df_search_result = search_dataframe(search_term, df)
+    df_search_result = search_dataframe(search_term, rankings_df)
     
     # Display the search result
     st.write(f'Search Results for "{search_term}":')
     st.write(df_search_result)
 else:
-    st.write('Enter a search term to filter the DataFrame.')
+    pass
 
 
 
