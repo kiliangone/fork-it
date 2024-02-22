@@ -35,15 +35,13 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#Clone the repo">Clone the repo</a></li>
+        <li><a href="#Install packages">Install packages</a></li>
+        <li><a href="#Download Data">Download Data</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
