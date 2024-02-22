@@ -54,7 +54,12 @@
 
 <img src="./images/screenshot_forkit.png" width="400" height="800">
 
+---
 
+- in the `app` folder you will find the streamlit app
+- the `data` folder is where you store the downloaded data
+- in the `EDA` folder you find some data preprocessing steps
+- in the `models` folder you will find our specific models
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
