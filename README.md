@@ -140,7 +140,7 @@ As part of the project you can see our process in this <a href="https://miro.com
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -175,6 +175,6 @@ Project Link: [https://github.com/kiliangone/fork-it](https://github.com/kiliang
 [issues-shield]: https://img.shields.io/github/issues/kiliangone/forkt-it.svg?style=for-the-badge
 [issues-url]: https://github.com/kiliangone/fork-it/issues
 [license-shield]: https://img.shields.io/github/license/kiliangone/forkt-it.svg?style=for-the-badge
-[license-url]: https://github.com/kiliangone/fork-it/blob/main/LICENSE
+[license-url]: https://github.com/kiliangone/fork-it/blob/main/LICENSE.txt
 [product-screenshot]: images/screenshot.png
 
