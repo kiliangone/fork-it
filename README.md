@@ -1,3 +1,30 @@
+# Data Files 
+
+We have a folder of large data files here: https://drive.google.com/drive/folders/1L3fyzEDqe2Z7uzGZi3pD8EIVVvuyMSpR?usp=drive_link
+
+- recipes.pkl is used by the streamlit app to pull the recipes by the recipe ID returned by the models.
+
+
+
+
+
+In the "keep just in case folder" we have some data we can use to rebuild some of the data wwe have in the data file.
+
+if_we_ever_need_to_rebuild_the_SL_pkl_file_df_w_rq.pk
+can rebuild
+recipes.pkl
+
+
+
+
+
+
+
+
+
+
+This stuff below is from the template 
+
 # Template Repo for ML Project
 
 This template repo will give you a good starting point for your second project. Besides the files used for creating a virtual environment, you will find a simple example of how to build a simple model in a python script. This is maybe the simplest way to do it. We train a simple model in the jupyter notebook, where we select only some features and do minimal cleaning. The output is then stored in simple python scripts.
