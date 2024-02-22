@@ -3,20 +3,17 @@ import pandas as pd
 import re
 
 #Header
+st.image('app_assets/logo.jpg')
 st.title('Fork It')
-#st.image('app_assets/logo.webp')
-
-# Load all the data 
-
-user_id = st.text_input("Enter User ID:")
-
-# Displaying the selected user ID
-st.write(f"You're {user_id}")
-
-
 st.write('Welcome to Fork It, your tool to find recipes that optimise your macros!')
 
-# Session state callbacks
+# Entering all your data
+
+# Enter User ID
+user_id = st.text_input("Enter User ID:")
+
+# Lots of slider stuff
+# This sets the sliders and makes sure they add up to 100
 def callback_carbs():
     """The callback renormalizes the values that were not updated."""
     # Here, if we modify carbs, we calculate the remaining value for normalisation of fat, protein
@@ -38,7 +35,6 @@ def callback_protein():
     sum = st.session_state.carbs + st.session_state.fat
     st.session_state.carbs = st.session_state.carbs/sum*remain
     st.session_state.fat = st.session_state.fat/sum*remain
-
 
 # Session state initialise
 # Check if 'key' already exists in session_state
@@ -74,17 +70,11 @@ def update_macros(plan):
 
 # Define the radio buttons for diet plans
 diet_plan = st.radio("Select a diet plan:", ('Custom', 'Keto', 'Low Fat', 'High Protein', 'Low Carb'))
+# End of slider thing
 
 # Define checkboxes for dietary requirements
+diet_requirements = st.radio("Select your requirement:", ('Lactose Free', 'Gluten Free', 'Vegeterian', 'Vegan'))
 
-diet_requirements = st.radio("Select your requirement:", ('Lactose Free', 'Gluten Free', 'Vegeterian', 'Vegan', 'American', 'None'))
-
-# st.title('Dietary Requirements')
-
-# lf = st.checkbox('Lactose Free')
-# gf = st.checkbox('Gluten Free')
-# v = st.checkbox('Vegeterian')
-# vg = st.checkbox('Vegan')
 
 # Function to perform text search
 def search_dataframe(search_term, dataframe):
@@ -93,7 +83,7 @@ def search_dataframe(search_term, dataframe):
 
 search_term = st.text_input("Search for a term:")
 
-model = st.selectbox("Choose a model", ["NMF (general)", "NMF (specific)", "KNN (general)", "KNN (specific)"])
+model = st.selectbox("Choose a model", ["KNN (general)", "KNN (specific)"])
 
 tolerance = st.text_input("Enter your macro tolerance", value = "0")
 
@@ -144,14 +134,7 @@ if submitted:
     st.write(f"Fat: {fat}                   +/- {tolerance}%")
     st.write(f"Protein: {protein}           +/- {tolerance}%")
     st.write(f"User: {user_id}")
-    # if lf:
-    #     st.write(f"You are lactose free")
-    # if gf:
-    #     st.write(f"You are gluten free")
-    # if v:
-    #     st.write(f"You are a veggisaurus")
-    # if vg:
-    #     st.write(f"You are a vegan")
+
 
 # Functions defined
 
@@ -161,139 +144,53 @@ def load_rankings_data(file_path):
 
 def top_n_values(column, n=1000000000):
     top_n = column.nlargest(n)
-    top_values_list = [(idx, val) for idx, val in top_n.iteritems()]
+    top_values_list = [(idx, val) for idx, val in top_n.items()]
     return top_values_list
 
-# NMF General
+#pulling lists based on model and user ID
+# general, no requirements, new user
+if model == "KNN (general)" and user_id == '1536':
+    st.write("You selected a KNN general for a new user with no dietary requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_american.csv')
+# general, vegan, new user
+elif model == "KNN (general)" and user_id == '10700':
+    st.write("You selected a KNN general for a new user with  vegan requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_veganitalian.csv')
+# general, glutenfree, new user
+elif model == "KNN (general)" and user_id == '29600':
+    st.write("You selected a KNN general for a new user with gluten free requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_glutenfreefish.csv')
+# general, no requirements, existing user
+elif model == "KNN (general)" and user_id == '13063':
+    st.write("You selected a KNN general for an existing user with no dietary requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_exist1.csv')
+# general, no requirements, existing user
+elif model == "KNN (general)" and user_id == '35526':
+    st.write("You selected a KNN general for an existing user with no dietary requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_exist2.csv')
+# general, vegan, existing user
+elif model == "KNN (general)" and user_id == '3288':
+    st.write("You selected a KNN general for an existing user with vegan requirements")
+    top_values_list = pd.read_csv('app_data/knn_general_exist3.csv')
+# specific, no requirements, existing user
+elif model == "KNN (specific)" and user_id == '10700':
+    st.write("You selected a KNN specific for a new user with vegan requirements")
+    top_values_list = pd.read_csv('app_data/knn_vegan_veganitalian.csv')
+# specific, no requirements, existing user
+elif model == "KNN (specific)" and user_id == '29600':
+    st.write("You selected a KNN specific for a new user with gluten free requirements")
+    top_values_list = pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
+# specific, vegan, existing user
+elif model == "KNN (specific)" and user_id == '3288':
+    st.write("You selected a KNN specific for an exisiting user with vegan requirements")
+    top_values_list = pd.read_csv('app_data/knn_vegan_exist3.csv')
+else:
+    st.write("You've picked a combo that don't work")
 
-if model == "NMF (general)":
-    pass
-    # Code to execute if "NMF (general)" is selected
-    st.write("You selected NMF (general).")
-    rankings_df = load_rankings_data('/home/rickyjalapeno/freshest_fork/fork-it/app/app_data/knn_general_glutenfreefish.csv')
-    #top_values_list = top_n_values(rankings_df['column_name'])
-    
-    # Additional condition to filter the DataFrame
-    # if diet_requirements == "Lactose Free":
-    #     (rankings_df['lactosefree'] == 1)
-    # elif diet_requirements == "Lactose Free":
-    #     (rankings_df['glutenfree'] == 1)
-    # elif diet_requirements == "Lactose Free":
-    #     (rankings_df['vegan'] == 1)
-    # elif diet_requirements == "Lactose Free":
-    #     (rankings_df['vegeterian'] == 1)
-    # else:
-    #     (rankings_df)
-
-# NMF Specific 
-
-# Lactose Free
-elif model == "NMF (specific)" and diet_requirements == "Lactose Free":
-    st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
-# Gluten Free
-elif model == "NMF (specific)" and diet_requirements == "Gluten Free":
-    st.write("You selected NMF (specific) & Gluten Free")
-    rankings_df = load_rankings_data('app_data/nmf_glutenfree_glutenfreefish.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vegan
-elif model == "NMF (specific)" and diet_requirements == "Vegan":
-    st.write("You selected NMF (specific) & vegan")
-    rankings_df = load_rankings_data('app_data/nmf_vegan_veganitalian.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vege
-elif model == "NMF (specific)" and diet_requirements == "Vegeterian":
-    st.write("You selected NMF (specific) & Vege, note there is NO specific model here")
-
-# KNN General    
-
-# Lactose Free
-elif model == "KNN (general)" and diet_requirements == "Lactose Free":
-    st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
-# Gluten Free
-elif model == "KNN (general)" and diet_requirements == "Gluten Free":
-    st.write("You selected NMF (specific) & Gluten Free")
-    rankings_df = load_rankings_data('app_data/knn_general_glutenfreefish.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vegan
-elif model == "KNN (general)" and diet_requirements == "Vegan":
-    st.write("You selected NMF (specific) & vegan")
-    rankings_df = load_rankings_data('app_data/knn_general_veganitalian.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vege
-elif model == "KNN (general)" and diet_requirements == "Vegeterian":
-    st.write("You selected NMF (specific) & Vege, note there is NO specific model here")
-
-# KNN Specific 
-
-# Lactose Free
-elif model == "KNN (general)" and diet_requirements == "Lactose Free":
-    st.write("You selected NMF (specific) & Lactose Free, note there is NO specific model here")
-# Gluten Free
-elif model == "KNN (general)" and diet_requirements == "Gluten Free":
-    st.write("You selected NMF (specific) & Gluten Free")
-    rankings_df = load_rankings_data('app_data/knn_glutenfree_glutenfreefish.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vegan
-elif model == "KNN (general)" and diet_requirements == "Vegan":
-    st.write("You selected NMF (specific) & vegan")
-    rankings_df = load_rankings_data('app_data/knn_vegan_veganitalian.csv')
-    top_values_list = top_n_values(rankings_df['column_name'])
-# Vege
-elif model == "KNN (general)" and diet_requirements == "Vegeterian":
-    st.write("You selected NMF (specific) & Vege, note there is NO specific model here")
-
-
-# Outputting Results
-
-# Function to load rankings data
-def load_rankings_data(model, diet_requirements):
-    if model == "NMF (general)":
-        pass  # Add your NMF (general) logic here
-    elif model == "NMF (specific)" and diet_requirements == "Lactose Free":
-        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
-    elif model == "NMF (specific)" and diet_requirements == "Gluten Free":
-        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
-    elif model == "NMF (specific)" and diet_requirements == "Vegan":
-        return pd.read_csv('app_data/nmf_vegan_veganitalian.csv')
-    elif model == "NMF (specific)" and diet_requirements == "Vegetarian":
-        return pd.read_csv('app_data/nmf_glutenfree_glutenfreefish.csv')
-    elif model == "KNN (general)":
-        pass  # Add your KNN (general) logic here
-    elif model == "KNN (specific)" and diet_requirements == "Lactose Free":
-        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
-    elif model == "KNN (specific)" and diet_requirements == "Gluten Free":
-        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
-    elif model == "KNN (specific)" and diet_requirements == "Vegan":
-        return pd.read_csv('app_data/knn_vegan_veganitalian.csv')
-    elif model == "KNN (specific)" and diet_requirements == "Vegetarian":
-        return pd.read_csv('app_data/knn_glutenfree_glutenfreefish.csv')
-    else:
-        return pd.DataFrame()  # or return None or handle the default case as needed
-
-st.dataframe(rankings_df)
-
-st.header('Rankings')
-
-
-# if NMF then we need to get the rankings here
-    # Load ranking data
-    rankings_df = load_rankings_data(model, diet_requirements)
-
-    # Get data for selected user, this only needed for the NMF 
-    row_of_interest = rankings_df.loc[user_id]
-    # Get the top 10 values in the row
-    top_values = top_n_values(row_of_interest)
-    # Pass values to a variable 
-    top_recipes = [item[0] for item in top_values]
-
-    st.write(top_recipes[:10])
-
-# if KNN then we already have the rankings
-
-top_recipes = rankings_df['RecipeId']
+# This loads all the lovely recipe data
 
 def load_recipe_data():
-    recipes_df = pd.read_pickle('data/recipes.pkl')
+    recipes_df = pd.read_pickle('app_data/recipes.pkl')
     return recipes_df
 
 
@@ -302,29 +199,20 @@ def load_recipe_data():
 # Macros
 
 st.header('Recipes')
+st.dataframe(top_values_list)
 recipes_df = load_recipe_data()
-top_10_df = recipes_df[recipes_df['RecipeId'].isin(top_recipes)]
+st.dataframe(recipes_df)
+top_10_df = recipes_df[recipes_df['RecipeId'].isin(top_values_list)]
 st.subheader('Top 10')
 st.write(top_10_df)
 filtered_df = top_10_df[
-    (top_10_df['Carb%'] >= (carbs - tolerance)) & 
-    (top_10_df['Carb%'] <= (carbs + tolerance)) &
-    (top_10_df['Fat%'] >= (fat - tolerance)) & 
-    (top_10_df['Fat%'] <= (fat + tolerance)) & 
-    (top_10_df['Protein%'] >= (protein - tolerance)) & 
-    (top_10_df['Protein%'] <= (protein + tolerance))
+    (top_10_df['Carb%'] >= (carbs - float(tolerance))) &
+    (top_10_df['Carb%'] <= (carbs + float(tolerance))) &
+    (top_10_df['Fat%'] >= (fat - float(tolerance))) &
+    (top_10_df['Fat%'] <= (fat + float(tolerance))) &
+    (top_10_df['Protein%'] >= (protein - float(tolerance))) &
+    (top_10_df['Protein%'] <= (protein + float(tolerance)))
 ]
-
-# Dietary Requirements
-
-#if lf:
-#    filtered_df = filtered_df[filtered_df['lactosefree'] == 1]
-#if gf:
-#    filtered_df = filtered_df[filtered_df['glutenfree'] == 1]
-#if v:
-#    filtered_df = filtered_df[filtered_df['vegetarian'] == 1]
-#if vg:
-#    filtered_df = filtered_df[filtered_df['vegan'] == 1]
 
 # Search Term
 
@@ -346,33 +234,6 @@ if search_term:
     st.write(df_search_result)
 else:
     pass
-
-
-
-
-
-
-
-
-
-
-
-# checks we can enable to check results match dataframe
-
-# st.write(recipes_df.dtypes)
-# st.write(filtered_df)
-# st.write(recipes_df.head())
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Returning results with custom formatting
@@ -410,6 +271,3 @@ else:
         # Increment counters
         recipe_number += 1
         recipes_printed += 1
-
-
-# to add
