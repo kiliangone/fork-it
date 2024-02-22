@@ -1,119 +1,84 @@
-# Data Files 
-
-We have a folder of large data files here: https://drive.google.com/drive/folders/1L3fyzEDqe2Z7uzGZi3pD8EIVVvuyMSpR?usp=drive_link
-
-- recipes.pkl is used by the streamlit app to pull the recipes by the recipe ID returned by the models.
-
-
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
 
 
-In the "keep just in case folder" we have some data we can use to rebuild some of the data wwe have in the data file.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/kiliangone/fork-it">
+    <img src="./images/logo_forkit.png" alt="Logo" width="200" height="200">
+  </a>
 
-if_we_ever_need_to_rebuild_the_SL_pkl_file_df_w_rq.pk
-can rebuild
-recipes.pkl
+<h3 align="center">Fork it - Your individual recipe recommender </h3>
 
+ <p align="center">
+    Welcome to Fork it! This project aims to provide personalized recipe recommendations tailored to individual users' nutritional goals, ingredient preferences, and dietary restrictions. Leveraging collaborative filtering recommender systems along with Non-negative Matrix Factorization (NMF) and K-Nearest Neighbors (KNN) models, our system suggests recipes based on the user's rating history and specified criteria.
+    <br />
+    <a href="https://github.com/kiliangone/fork-it"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/kiliangone/fork-it">View Demo</a>
+    ·
+    <a href="https://github.com/kiliangone/fork-it/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/kiliangone/fork-it/issues">Request Feature</a>
+  </p>
+</div>
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
+## About The Project
 
-
-
-
-
-
-
-This stuff below is from the template 
-
-# Template Repo for ML Project
-
-This template repo will give you a good starting point for your second project. Besides the files used for creating a virtual environment, you will find a simple example of how to build a simple model in a python script. This is maybe the simplest way to do it. We train a simple model in the jupyter notebook, where we select only some features and do minimal cleaning. The output is then stored in simple python scripts.
-
-The data used for this is: [coffee quality dataset](https://github.com/jldbc/coffee-quality-database).
-
----
-
-## Set up a Kanban board on github
-
-Go to ML-Project Template.
-
-1. Click on "Use this Template" (Blue button)
-![alt text](./images/step_1a_new.png)
-
-2. Create new repository with relevant name, the owner should be your own account and **not** Spiced. 
-![alt text](./images/step_2_new.png)
-
-3. In your newly create repo, navigate to "Projects", and then click on "Link a project" (blue button). Normally you don't have created a project yet, so you can click the arrow navigation to create project on your profile. This project can be added at the end to your repository.
-![alt text](./images/add_project_new.png)
-
-
-4.  You will be guided to your profiles projects and it will be shown a create project window. Choose "board" view and **not** "table" view.
- ![alt text](./images/choose_board.png)
-5. Now change the name of your board, to match that of your chosen ML project. Then click "Create project" blue button. Great you create Kanban Board
-![alt text](./images/create_project_new.png)
-
-6. Next, assign rights to all your team members by clicking on the 3 dots on the top right of the board, and then go to "Settings".
-![alt text](./images/kanban_settings.png)
-
-
-7. Next, click on "Manage Access". Add your team mates by Searching for their github handle in the search window.Change their Role from ‘Write’ to ‘Admin’. Click on the blue button “Invite” to add them. Repeat for all team members.
-![alt text](./images/team_access_new.png
-)
-
-8. Next,go back to the kanban board and at the bottom  add action items with the relevant name e.g. “load data”, "get statistics", etc.
-![alt text](./images/load_data_item.png
-)
-
-
-9. Convert added item to issue by clicking on the 3 dots on the particular added item.
-![alt text](./images/convert_to_issue.png
-)
-
-10. Then select the repo you created  for the issue to be added. (Select the project repo example “my-project-name”)
-![alt text](./images/select_repo.png
-)
-
-11. When in project repo, Go to issues, then go to milestones. 
-![alt text](./images/to_milestones.png
-)
-
-12. Click on ”New milestone”.
-
-13. Give the milestone a due date and description as per the example provided by the coaches. Add description of: 
-
-    A) What needs to be completed to be done with the milestone
-
-    B) The definition of done: what will your result look like when you have completed the milestone? (check the provided format)
-![alt text](./images/new_milestone.png)
-
-14. Now navigate to "issues".
-
-15. Assign issues to milestones 
-![alt text](./images/milestone_to_issue_new.png)
-
-16. Give it assignees (people who will work on the task). 
-![alt text](./images/milestone_to_someone.png)
-
-### Optional: Add workflows
-
-Workflows can help you keep your kanban board automatically on track. 
-
-Select the project created in the steps above.  
-
-Click on the 3 dots to the far right of the board (...)
-
-Select workflow as the first option. 
-
-Activate the ones you feel necessary to your project
-
-Go back to your project repository (fraud detection))
-
-## Set up your Environment
+<img src="./images/screenshot_forkit.png" width="400" height="800">
 
 
 
-### **`macOS`** type the following commands : 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+1. Clone the repo
+2. Install packages
+3. Download Data
+
+### Clone the repo
+```sh
+   git clone https://github.com/kiliangone/fork-it.git
+   ```
+
+### Install packages
+
+#### **`macOS`** type the following commands : 
 
 
 - For installing the virtual environment and the required package you can either follow the commands:
@@ -125,18 +90,8 @@ Go back to your project repository (fraud detection))
     pip install --upgrade pip
     pip install -r requirements.txt
     ```
-Or ....
--  use the [Makefile](Makefile) and run `make setup` or install it manually with the following commands:
 
-     ```BASH
-    make setup
-    ```
-    After that active your environment by following commands:
-    ```BASH
-    source .venv/bin/activate
-    ```
-
-### **`WindowsOS`** type the following commands :
+#### **`WindowsOS`** type the following commands :
 
 - Install the virtual environment and the required packages by following commands.
 
@@ -166,26 +121,62 @@ Or ....
     python.exe -m pip install --upgrade pip
     ```
 
+### Download Data
 
-   
-## Usage
+In order to use the repos' data you have to download the data stored in a google file. Please download the data you need from this <a href="https://drive.google.com/drive/folders/1L3fyzEDqe2Z7uzGZi3pD8EIVVvuyMSpR?usp=drive_link">file</a>.
 
-In order to train the model and store test data in the data folder and the model in models run:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-**`Note`**: Make sure your environment is activated.
 
-```bash
-python example_files/train.py  
-```
 
-In order to test that predict works on a test set you created run:
+<!-- ROADMAP -->
+## Roadmap
 
-```bash
-python example_files/predict.py models/linear_regression_model.sav data/X_test.csv data/y_test.csv
-```
+As part of the project you can see our process in this <a href="https://miro.com/app/board/uXjVNy_D69k=/#tpicker-content">roadmap</a> or just see the pdf in the repo. We used Miro to plan what to do and how to it. 
 
-## Limitations
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Development libraries are part of the production environment, normally these would be separate as the production code should be as slim as possible.
 
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Renata Mitrega - <a href="https://www.linkedin.com/in/renata-mitrega/">LinkedIn</a>
+
+Richard James - <a href="https://www.linkedin.com/in/richard--james/">LinkedIn</a>
+
+Kilian Gedat - <a href="https://www.linkedin.com/in/kiliangedatdata/">LinkedIn</a>
+
+
+Project Link: [https://github.com/kiliangone/fork-it](https://github.com/kiliangone/fork-it)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/kiliangone/fork-it.svg?style=for-the-badge
+[contributors-url]: https://github.com/kiliangone/fork-it/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kiliangone/forkt-it.svg?style=for-the-badge
+[forks-url]: https://github.com/kiliangone/fork-it/network/members
+[stars-shield]: https://img.shields.io/github/stars/kiliangone/forkt-it.svg?style=for-the-badge
+[stars-url]: https://github.com/kiliangone/fork-it/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kiliangone/forkt-it.svg?style=for-the-badge
+[issues-url]: https://github.com/kiliangone/fork-it/issues
+[license-shield]: https://img.shields.io/github/license/kiliangone/forkt-it.svg?style=for-the-badge
+[license-url]: https://github.com/kiliangone/fork-it/blob/main/LICENSE
+[product-screenshot]: images/screenshot.png
 
