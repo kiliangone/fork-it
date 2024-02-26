@@ -3,7 +3,7 @@ import pandas as pd
 import re
 
 #Header
-st.image('/home/rickyjalapeno/freshest_fork/fork-it/app/app_assets/logo.jpg')
+st.image('app_assets/logo.jpg')
 st.title('Fork It')
 st.write('Welcome to Fork It, your tool to find recipes that optimise your macros!')
 
@@ -83,10 +83,10 @@ vg = st.checkbox('Vegan')
 
 # Function to perform text search
 def search_dataframe(search_term, dataframe):
-    result_df = dataframe[dataframe['Description'].str.contains(search_term, case=False)]
+    result_df = dataframe[dataframe['Keywords'].str.contains(search_term, case=False)]
     return result_df
 
-search_term = st.text_input("Search for a term:")
+search_term = st.text_input("Search for an ingredient:")
 
 model = st.selectbox("Choose a model", ["KNN (general)", "KNN (specific)"])
 
@@ -191,14 +191,23 @@ elif model == "KNN (specific)" and user_id == '3288':
 else:
     st.write("You've picked a combo that don't work")
 
-st.dataframe(top_values_list)
-
+if model == "KNN (general)":
+    if lf:
+        top_values_list = top_values_list[top_values_list['lactosefree'] == 1]
+    if gf:
+        top_values_list = top_values_list[top_values_list['glutenfree'] == 1]
+    if v:
+        top_values_list = top_values_list[top_values_list['vegetarian'] == 1]
+    if vg:
+        top_values_list = top_values_list[top_values_list['vegan'] == 1]
+else:
+    pass
 
 
 # This loads all the lovely recipe data
 
 def load_recipe_data():
-    recipes_df = pd.read_pickle('/home/rickyjalapeno/freshest_fork/fork-it/app/recipe_slim_clean.pkl')
+    recipes_df = pd.read_pickle('recipe_slim_clean.pkl')
     return recipes_df
 
 recipes_df = load_recipe_data()
@@ -223,14 +232,14 @@ filtered_df = merged_df[
 
 st.header('Recipes')
 st.subheader('Top 10')
-st.write(filtered_df)
+#st.write(filtered_df)
 
 
 # Search Term
 
 if search_term:
     # Do something with the search term, for example, print it
-    df.query('ingredients == @search_term')
+    merged_df.query('Keywords == @search_term')
 else:
     # if no search term, does nothing
     pass
@@ -239,20 +248,13 @@ else:
 # Check if the search term is not empty
 if search_term:
     # Use the search_dataframe function to filter the DataFrame
-    df_search_result = search_dataframe(search_term, rankings_df)
+    df_search_result = search_dataframe(search_term, merged_df)
     
     # Display the search result
     st.write(f'Search Results for "{search_term}":')
     st.write(df_search_result)
 else:
     pass
-
-
-
-
-
-
-
 
 
 # Returning results with custom formatting
@@ -285,7 +287,7 @@ else:
             st.image(image_urls[0].rstrip('",'), caption=f"{row['Name']}")
         else:
             # Display a message if no valid image URL was found
-            st.image('assets/ph.png')
+            st.image('app_assets/ph.webp')
         
         # Increment counters
         recipe_number += 1
