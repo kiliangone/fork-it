@@ -3,13 +3,14 @@ import pandas as pd
 import re
 
 #Header
-st.image('app_assets/logo.jpg')
 st.title('Fork It')
 st.write('Welcome to Fork It, your tool to find recipes that optimise your macros!')
+st.image('app_assets/logo.jpg')
 
 # Entering all your data
 
 # Enter User ID
+st.header('Log in!')
 user_id = st.selectbox("Enter User ID:", ["1536", "10700", "29600", "13063", "35526", "3288"])
 
 # Lots of slider stuff
@@ -69,26 +70,8 @@ def update_macros(plan):
     # No need to do anything for 'Custom' as it allows manual adjustment
 
 # Define the radio buttons for diet plans
+st.header('What are your Macros?')
 diet_plan = st.radio("Select a diet plan:", ('Custom', 'Keto', 'Low Fat', 'High Protein', 'Low Carb'))
-# End of slider thing
-
-# Define checkboxes for dietary requirements
-
-st.title('Dietary Requirements')
-
-lf = st.checkbox('Lactose Free')
-gf = st.checkbox('Gluten Free')
-v = st.checkbox('Vegeterian')
-vg = st.checkbox('Vegan')
-
-# Function to perform text search
-def search_dataframe(search_term, dataframe):
-    result_df = dataframe[dataframe['Keywords'].str.contains(search_term, case=False)]
-    return result_df
-
-search_term = st.text_input("Search for an ingredient:")
-
-model = st.selectbox("Choose a model", ["KNN (general)", "KNN (specific)"])
 
 tolerance = st.text_input("Enter your macro tolerance", value = "0")
 
@@ -115,6 +98,29 @@ st.slider("% of protein",
                 max_value = 100,
                 step = 1,
                 key='protein', on_change=callback_protein)
+# End of slider thing
+
+# Define checkboxes for dietary requirements
+
+st.header('What are your Dietary Requirements?')
+
+model = st.selectbox("Choose a model", ["KNN (general)", "KNN (specific)"])
+
+lf = st.checkbox('Lactose Free')
+gf = st.checkbox('Gluten Free')
+v = st.checkbox('Vegeterian')
+vg = st.checkbox('Vegan')
+
+# Function to perform text search
+def search_dataframe(search_term, dataframe):
+    result_df = dataframe[dataframe['RecipeIngredientParts'].str.contains(search_term, case=False)]
+    return result_df
+
+st.header('Any Ingredients?')
+
+search_term = st.text_input("Search for an ingredient:")
+
+
 
 with st.form("entry_form", clear_on_submit=False):
     carbs = st.session_state.carbs
@@ -155,7 +161,7 @@ def top_n_values(column, n=1000000000):
 
 if model == "KNN (general)" and user_id == '1536':
     st.write("You selected a KNN general for a new user with no dietary requirements")
-    top_values_list = pd.read_csv('app_data/knn_general_american.csv')
+    top_values_list = pd.read_csv('/home/richard/app-legacy/app_data/knn_general_american.csv')
 # general, vegan, new user
 elif model == "KNN (general)" and user_id == '10700':
     st.write("You selected a KNN general for a new user with  vegan requirements")
@@ -163,7 +169,7 @@ elif model == "KNN (general)" and user_id == '10700':
 # general, glutenfree, new user
 elif model == "KNN (general)" and user_id == '29600':
     st.write("You selected a KNN general for a new user with gluten free requirements")
-    top_values_list = pd.read_csv('app_data/knn_general_glutenfreefish.csv')
+    top_values_list = pd.read_csv('/home/richard/app-legacy/app_data/knn_general_glutenfreefish.csv')
 # general, no requirements, existing user
 elif model == "KNN (general)" and user_id == '13063':
     st.write("You selected a KNN general for an existing user with no dietary requirements")
@@ -191,23 +197,13 @@ elif model == "KNN (specific)" and user_id == '3288':
 else:
     st.write("You've picked a combo that don't work")
 
-if model == "KNN (general)":
-    if lf:
-        top_values_list = top_values_list[top_values_list['lactosefree'] == 1]
-    if gf:
-        top_values_list = top_values_list[top_values_list['glutenfree'] == 1]
-    if v:
-        top_values_list = top_values_list[top_values_list['vegetarian'] == 1]
-    if vg:
-        top_values_list = top_values_list[top_values_list['vegan'] == 1]
-else:
-    pass
+
 
 
 # This loads all the lovely recipe data
 
 def load_recipe_data():
-    recipes_df = pd.read_pickle('recipe_slim_clean.pkl')
+    recipes_df = pd.read_pickle('recipes_slim.pkl')
     return recipes_df
 
 recipes_df = load_recipe_data()
@@ -216,6 +212,21 @@ recipes_df = load_recipe_data()
 
 # Merge top_values_list with recipes_df based on the 'RecipeId' column
 merged_df = pd.merge(top_values_list, recipes_df, on='RecipeId')
+
+if model == "KNN (general)":
+    if lf:
+        merged_df = merged_df[merged_df['lactosefree'] == 1]
+    if gf:
+        merged_df = merged_df[merged_df['glutenfree'] == 1]
+    if v:
+        merged_df = merged_df[merged_df['vegetarian'] == 1]
+    if vg:
+        merged_df = merged_df[merged_df['vegan'] == 1]
+else:
+    pass
+
+
+
 
 # Convert relevant columns to numeric types individually
 tolerance = float(tolerance)  # Assuming 'tolerance' is entered as a string
@@ -235,14 +246,7 @@ st.subheader('Top 10')
 #st.write(filtered_df)
 
 
-# Search Term
 
-if search_term:
-    # Do something with the search term, for example, print it
-    merged_df.query('Keywords == @search_term')
-else:
-    # if no search term, does nothing
-    pass
 
 
 # Check if the search term is not empty
@@ -292,3 +296,6 @@ else:
         # Increment counters
         recipe_number += 1
         recipes_printed += 1
+
+
+st.dataframe(top_values_list)
